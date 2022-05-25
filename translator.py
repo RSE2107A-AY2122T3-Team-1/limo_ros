@@ -48,7 +48,8 @@ def limo_status_translator_node():
     rospy.Subscriber('limo_status', String, callback)
     rospy.init_node('limo_status_translator_node', anonymous=True)
     service = rospy.Service('trans_svc', GetLimoStatus, callback)
-
+    print("Trans: ") 
+    
     rospy.spin()
 
 if __name__ == '__main__':
