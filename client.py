@@ -37,53 +37,36 @@
 ## to the 'chatter' topic
 
 import rospy
+from mini_project.srv import GetLimoStatus 
 from std_msgs.msg import String
 
-def callback(data):
-    rospy.loginfo("Printing xx status: ", data.data)
+#def callback(data):
+#    rospy.loginfo("Printing xx status: ", data.data)
 
 def limo_status_client_node():
+
+    rospy.init_node('limo_status_client_node', anonymous=True)
+    client = rospy.ServiceProxy('request', GetLimoStatus)
     
     get_status = 0
-    pub = rospy.Publisher('request', String, queue_size=10)
-    rospy.init_node('limo_status_client_node', anonymous=True)
+    #pub = rospy.Publisher('request', String, queue_size=10)
+    #pub.publish(str(get_status))
     rate = rospy.Rate(1) # 1hz every 1 second request new status
-    
     #rospy.Subscriber('response', String, callback)
-    
+
     while not rospy.is_shutdown():
-        #send get_status request 0 to 4
-        if (get_status == 0): # /limo_status/vehicle_status
-            print("Sending get_status value: {}" .format(get_status))
-            rospy.loginfo("0") #needs to be string
-            pub.publish("0")
 
-        elif (get_status == 1): # /limo_status/control_mode
-            print("Sending get_status value: {}" .format(get_status))
-            rospy.loginfo("1")
-            pub.publish("1")
-
-        elif (get_status == 2): # /limo_status/battery_voltage
-            print("Sending get_status value: {}" .format(get_status))
-            rospy.loginfo("2")
-            pub.publish("2")
-
-        elif (get_status == 3): # /limo_status/error_code
-            print("Sending get_status value: {}" .format(get_status))
-            rospy.loginfo("3")
-            pub.publish("3")
-
-        elif (get_status == 4): # /limo_status/motion_mode
-            print("Sending get_status value: {}" .format(get_status))
-            rospy.loginfo("4")
-            pub.publish("4")
-            
-        rospy.Subscriber('response', String, callback)
-
+        #display to screen
+        rospy.loginfo("Requesting %d", get_status)
         get_status += 1 
         if get_status == 5:
             get_status = 0
 
+        #send request to sever
+        #req = GetLimoStatus()
+        #req.get_status =  get_status
+        #resp = client(str(req))
+        #rospy.loginfo("Received response: %d" % resp.status_string)
         rate.sleep()
 
 
